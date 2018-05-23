@@ -30,14 +30,6 @@ app.use('/users',users);
 
 
 
-
-
-
-
-
-
-
-
 app.get('/getAllPOIs',function(req,res){
 //get from DB all POI
     Poi={'id':123,
@@ -52,6 +44,7 @@ app.get('/getAllPOIs',function(req,res){
     POIs=[Poi];
     res.send(POIs);
 })
+
 
 
 app.get('/countries',function(req,res){
