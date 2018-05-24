@@ -30,7 +30,7 @@ var parser = new xml2js.Parser();
 var users=require('./routes/users');
 app.use('/users',users);
 
-router.post('/login', function(req,res){
+app.post('/login', function(req,res){
     var query=util.format("SELECT username,password FROM users WHERE username='%s';",req.body.username);
     user=DButilsAzure.execQuery(query)
     .then(function(result){
