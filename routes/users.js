@@ -21,6 +21,9 @@ router.use('/log',function(req,res,next){
         })
     }
 });
+router.get('/log/getSavedPOI',function(req,res){
+    res.send(req.decoded.payload);
+})
 
 router.post('/register',function(req,res){
     var username=req.body.username;
@@ -33,24 +36,34 @@ router.post('/register',function(req,res){
     var query=util.format("INSERT INTO users VALUES ('%s','%s','%s','%s','%s','%s','%s');",username,pass,name,lastName,city,country,email);
     var categories=req.body.categories;
     var catquetyquery = util.format("INSERT INTO UserCategories VALUES ('%s','%s'),('%s','%s');",username,categories[0],username,categories[1]);
-    //enter new user to users tables
+    var questions = req.body.questions
+    var answers = req.body.answers
+    var questionquery = util.format("INSERT INTO userquestions VALUES ('%s','%s','%s'),('%s','%s','%s');",username,questions[0],answers[0],username,questions[1],answers[1]);
+//     //enter new user to users tables
     DButilsAzure.execQuery(query)
     .then(function(result){
-        res.send(result)
+        res.send(result);
     })
     .catch(function(err){
-        console.err(err)
+        console.err(err);
     })
-   //enter new user categories
+//    //enter new user categories
     DButilsAzure.execQuery(catquetyquery)
     .then(function(result){
-        res.send(result)
+        res.send(result);
     })
     .catch(function(err){
-        console.err(err)
+        console.err(err);
+    })
+    //enter new questions
+    DButilsAzure.execQuery(questionquery)
+    .then(function(result){
+        res.send(result);
+    })
+    .catch(function(err){
+        console.err(err);
     })
 });
-
 
 
 router.post('/login', function(req,res){
