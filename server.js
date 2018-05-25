@@ -30,35 +30,7 @@ var parser = new xml2js.Parser();
 var users=require('./routes/users');
 app.use('/users',users);
 
-app.post('/login', function(req,res){
-    var query=util.format("SELECT username,password FROM users WHERE username='%s';",req.body.username);
-    user=DButilsAzure.execQuery(query)
-    .then(function(result){
-        var user=result[0];
-        if(req.body.pass==user['password']){
-            var payload = {
-                userName: user.username,
-            }
-            var token = jwt.sign(payload, 'secret', {
-                expiresIn: "1d" // expires in 24 hours
-            });
-                // return the information including token as JSON
-            res.json({
-                success: true,
-                message: 'Enjoy your token!',
-                token: token
-            });    
-        }
-        else{
-            res.send('wrong pass');
-        }
-    })
-    .catch(function(err){
-        console.log(err.message);
-    })
-  
-    //if(user[])
-})
+
 
 
 
