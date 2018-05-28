@@ -22,7 +22,6 @@ router.use('/log',function(req,res,next){
     }
 });
 
-<<<<<<< HEAD
 router.post('/log',function(req,res){
     var username=req.decoded.payload.userName;
     var userQuery=util.format("SELECT * FROM users WHERE username='%s';",username);
@@ -97,11 +96,6 @@ router.get('/log/saved',function(req,res){
         console.log(err);
     })
 
-=======
-
-router.get('/log/SavedPOI',function(req,res){
-    res.send(req.decoded.payload);
->>>>>>> be3b34906b04b607559a1a766a6080c5e96d73dd
 })
 
 router.get('/log/2LastSaved',function(req,res){
@@ -273,6 +267,41 @@ router.post('/login', function(req,res){
         console.log(err.message);
     })
   
-    //if(user[])
 })
 
+router.post('/log/review',function(req,res){
+    var username=req.decoded.payload.userName;
+    var poiID=req.body.poiID;
+    var review=req.body.review;
+    var insertPOI = util.format("INSERT INTO poireview (ID,review,username) VALUES ('%s','%s','%s');",poiID,review,username);
+    DButilsAzure.execQuery(insertPOI)
+    .then(function(result){
+        res.send(result);
+    })
+    .catch(function(err){
+        res.status(500).send('Failed to save the review');
+    })
+})
+
+router.post('/log/rating',function(req,res){
+    var poiID=req.body.poiID;
+    var rating=req.body.rating;
+    var ratings = util.format("SELECT numOfRaters,sumOfRatings FROM pois WHERE ID='%s';",poiID);
+    DButilsAzure.execQuery(ratings)
+    .then(function(result){
+        var newNumOfRaters=result[0]['numOfRaters']+1;
+        var newSum=result[0]['sumOfRatings']+Number(rating);
+        var newRating=newSum/newNumOfRaters;
+        var newRatings = util.format("UPDATE pois SET numOfRaters='%s',sumOfRatings='%s',rating='%s' WHERE ID='%s';",newNumOfRaters,newSum,newRating,poiID);
+        DButilsAzure.execQuery(newRatings)
+        .then(function(result){
+            res.status(200).send("The Ratings has updated");
+        })
+        .catch(function(err){
+            res.status(500).send('Failed to rank');
+        })
+    })
+    .catch(function(err){
+        res.status(500).send('Failed to rank');
+    })
+})
