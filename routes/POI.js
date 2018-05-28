@@ -28,6 +28,8 @@ router.get('/POIbyCategory/:categoryid',function(req,res){
     })
     .catch(function(err){
         console.err(err);
+        res.status(500).send('Error retrieving the categories POIs')
+
     })
 });
 
@@ -44,26 +46,29 @@ router.get('/MostpopularPOI/:categoryid/numbers/:n',function(req,res){
 
 
 //get from DB POI deatils ,images and reiviews
-router.get('/POI/:POIname',function(req,res){
-    var query=util.format("SELECT * FROM pois WHERE name = '%s';",req.params.POIname);
+router.get('/:POIid',function(req,res){
+    var query=util.format("SELECT * FROM pois WHERE ID = '%s';",req.params.POIid);
     let arr = {};
     DButilsAzure.execQuery(query)
     .then(function(result){
-        arr['poideatels'] = result;
-        console.log(arr['poideatels'][0].name);
+        arr['poidetails'] = result;
+        console.log(arr['poidetails'][0].name);
         return arr;
     })
     .then(function(arr){
-       return getpoiimages(arr['poideatels'][0].name).then(function(images){ 
+       return getpoiimages(arr['poidetails'][0].name).then(function(images){ 
             arr['images'] = images;
             return arr;})
     })
     .then(function(arr){
-       return getpoireviews(arr['poideatels'][0].name).then(function(reviews){  
+       return getpoireviews(arr['poidetails'][0].name).then(function(reviews){  
            arr['reviews'] = reviews;
            return arr;})
     })
     .then(function(arr){
+        var x = arr['poidetails'][0].ID;
+        var q = util.format("UPDATE pois SET numOFViews = numOFViews + 1 WHERE ID = '%s'",x);
+        DButilsAzure.execQuery(q)
         res.send(arr);
     })
     .catch(function(err){
@@ -100,9 +105,9 @@ router.get('/RandomPOI/:rating/n/:n',function(req,res){
 
 //get numbers of views of poi
 
-router.get('/numbersofviews/:POIname',function(req,res){
+router.get('/numbersofviews/:POIID',function(req,res){
 
-    var query=util.format("SELECT numOFViews FROM pois WHERE name='%s';",req.params.POIname);
+    var query=util.format("SELECT numOFViews FROM pois WHERE ID='%s';",req.params.POIID);
     DButilsAzure.execQuery(query)
     .then(function(result){
         res.send(result);

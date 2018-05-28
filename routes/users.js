@@ -154,18 +154,28 @@ router.put('/log/savedPOIOrder',function(req,res){
         }
         Promise.all(arr).then(function(){
             console.log("new order has created");
-
+            res.send("The Order has been updated");
         })
     })
     
     
     .catch(function(err){
         console.log(err);
+        res.status(500).send('Error while updating order');
     })
 })
 
 
-
+router.get('/questionslist',function(req,res){
+    DButilsAzure.execQuery('SELECT * FROM questions')
+    .then(function(result){
+        res.send(result);
+    })
+    .catch(function(err){
+        console.log(err);
+        res.status(500).send("Failed to return");
+    })
+})
 
 router.post('/passwordRetrival',function(req,res){
     var questionQuery=util.format("SELECT answer FROM userquestions WHERE username='%s' AND (ID='%d' OR ID='%d');",req.body.username,req.body.questionID[0],req.body.questionID[1]);
@@ -197,14 +207,14 @@ router.post('/passwordRetrival',function(req,res){
 
 router.post('/register',function(req,res){
     var username=req.body.username;
-    var pass=req.body.pass;
-    var name=req.body.name;
-    var lastName=req.body.lastName;
+    var pass=req.body.password;
+    var name=req.body.firstname;
+    var lastName=req.body.lastname;
     var city=req.body.city;
     var country=req.body.country;
     var email=req.body.email;
     var query=util.format("INSERT INTO users VALUES ('%s','%s','%s','%s','%s','%s','%s');",username,pass,name,lastName,city,country,email);
-    var categories=req.body.categories;
+    var categoriesID=req.body.categories;
     var questions = req.body.questions
     var answers = req.body.answers
     var questionquery = util.format("INSERT INTO userquestions VALUES ('%s','%s','%s'),('%s','%s','%s');",username,questions[0],answers[0],username,questions[1],answers[1]);
@@ -214,17 +224,17 @@ router.post('/register',function(req,res){
         res.send(result);
     })
     .catch(function(err){
-        console.err(err);
+        res.status(500).send('Error Inserting in USER');
     })
 //    //enter new user categories
-    for(var i=0;i<categories.length;i++){
-        var catquetyquery = util.format("INSERT INTO UserCategories VALUES ('%s','%s');",username,categories[i]);
+    for(var i=0;i<categoriesID.length;i++){
+        var catquetyquery = util.format("INSERT INTO UserCategories VALUES ('%s','%s');",username,categoriesID[i]);
         DButilsAzure.execQuery(catquetyquery)
         .then(function(result){
             res.send(result);
         })
         .catch(function(err){
-            console.err(err);
+            res.status(500).send('Error Inserting in Category');
         })
     }
     
@@ -234,13 +244,13 @@ router.post('/register',function(req,res){
         res.send(result);
     })
     .catch(function(err){
-        console.err(err);
+        res.status(500).send('Error Inserting in questions');
     })
 });
 
 
 router.get('/countries',function(req,res){
-    fs.readFile('ass3.2/countries.xml', function(err, data) {
+    fs.readFile('countries.xml', function(err, data) {
         parser.parseString(data, function (err, result) {
             res.send(result);
             console.log('Done');
@@ -254,7 +264,7 @@ router.post('/login', function(req,res){
     user=DButilsAzure.execQuery(query)
     .then(function(result){
         var user=result[0];
-        if(req.body.pass==user['password']){
+        if(req.body.password==user['password']){
             var payload = {
                 userName: user.username,
             }
