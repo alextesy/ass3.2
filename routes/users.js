@@ -21,7 +21,9 @@ router.use('/log',function(req,res,next){
         })
     }
 });
-router.get('/log/getSavedPOI',function(req,res){
+
+
+router.get('/log/SavedPOI',function(req,res){
     res.send(req.decoded.payload);
 })
 
@@ -88,8 +90,6 @@ router.post('/login', function(req,res){
         else{
             res.send('wrong pass');
         }
-
-        
 
     })
     .catch(function(err){

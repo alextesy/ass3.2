@@ -27,38 +27,12 @@ xml2js = require('xml2js');
  
 var parser = new xml2js.Parser();
 
+// models
 var users=require('./routes/users');
 app.use('/users',users);
+var POI = require('./routes/POI')
+app.use('/POI',POI)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-app.get('/getAllPOIs',function(req,res){
-//get from DB all POI
-    Poi={'id':123,
-        'POIname':'Statue of Liberty',
-        'caregoty':'Attraction',
-        'rating':4,
-        'description':'Very Nice',
-        'pictures':['https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/2016-11_Statue_of_Liberty_02.jpg/220px-2016-11_Statue_of_Liberty_02.jpg'],
-        'numOfViews':23,
-        'reviews':"asd"
-    };
-    POIs=[Poi];
-    res.send(POIs);
-})
 
 
 
