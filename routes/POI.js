@@ -15,6 +15,7 @@ router.get('/AllPOIs',function(req,res){
         })
         .catch(function(err){
             console.err(err);
+            res.status(500).send('error when try to find')
         })
 });
     //get from DB all POi by cat
@@ -63,9 +64,10 @@ router.get('/POI/:POIname',function(req,res){
            return arr;})
     })
     .then(function(arr){
-        res.send(arr)
+        res.send(arr);
     })
     .catch(function(err){
+        console.err(err);
         res.status(500).send('error when try to find');
     })
 });
@@ -73,8 +75,6 @@ router.get('/POI/:POIname',function(req,res){
 
 
 //get random POI 
-
-
 router.get('/RandomPOI/:rating/n/:n',function(req,res){
 
     var query=util.format("SELECT * FROM pois WHERE rating >= '%d';",req.params.rating);
@@ -98,7 +98,21 @@ router.get('/RandomPOI/:rating/n/:n',function(req,res){
 
 });
 
+//get numbers of views of poi
 
+router.get('/numbersofviews/:POIname',function(req,res){
+
+    var query=util.format("SELECT numOFViews FROM pois WHERE name='%s';",req.params.POIname);
+    DButilsAzure.execQuery(query)
+    .then(function(result){
+        res.send(result);
+    })
+    .catch(function(err){
+        console.err(err);
+        res.status(500).send('error when try to find');
+    })
+
+});
 
 
 // --- DB functions
