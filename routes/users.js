@@ -6,6 +6,10 @@ var util=require('util');
 var jwt    = require('jsonwebtoken');
 var PriorityQueue=require('js-priority-queue');
 
+var fs = require('fs'),
+xml2js = require('xml2js');
+var parser = new xml2js.Parser();
+
 
 router.use('/log',function(req,res,next){
     var token=req.body.token||req.query.token||req.headers['x-access-token'];
@@ -163,10 +167,6 @@ router.put('/log/savedPOIOrder',function(req,res){
 
 
 
-
-
-
-
 router.post('/passwordRetrival',function(req,res){
     var questionQuery=util.format("SELECT answer FROM userquestions WHERE username='%s' AND (ID='%d' OR ID='%d');",req.body.username,req.body.questionID[0],req.body.questionID[1]);
     DButilsAzure.execQuery(questionQuery)
@@ -238,6 +238,16 @@ router.post('/register',function(req,res){
     })
 });
 
+
+router.get('/countries',function(req,res){
+    fs.readFile('ass3.2/countries.xml', function(err, data) {
+        parser.parseString(data, function (err, result) {
+            res.send(result);
+            console.log('Done');
+        });
+    });
+})
+//--------------
 
 router.post('/login', function(req,res){
     var query=util.format("SELECT username,password FROM users WHERE username='%s';",req.body.username);

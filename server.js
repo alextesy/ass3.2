@@ -22,10 +22,6 @@ app.listen(port, function () {
 });
 
 
-var fs = require('fs'),
-xml2js = require('xml2js');
- 
-var parser = new xml2js.Parser();
 
 // models
 var users=require('./routes/users');
@@ -36,14 +32,6 @@ app.use('/POI',POI)
 
 
 
-app.get('/countries',function(req,res){
-    fs.readFile('countries.xml', function(err, data) {
-        parser.parseString(data, function (err, result) {
-            res.send(result);
-            console.log('Done');
-        });
-    });
-})
-//-------------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------
 
 
