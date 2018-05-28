@@ -22,6 +22,7 @@ router.use('/log',function(req,res,next){
     }
 });
 
+<<<<<<< HEAD
 router.post('/log',function(req,res){
     var username=req.decoded.payload.userName;
     var userQuery=util.format("SELECT * FROM users WHERE username='%s';",username);
@@ -96,6 +97,11 @@ router.get('/log/saved',function(req,res){
         console.log(err);
     })
 
+=======
+
+router.get('/log/SavedPOI',function(req,res){
+    res.send(req.decoded.payload);
+>>>>>>> be3b34906b04b607559a1a766a6080c5e96d73dd
 })
 
 router.get('/log/2LastSaved',function(req,res){
@@ -261,8 +267,6 @@ router.post('/login', function(req,res){
         else{
             res.send('wrong pass');
         }
-
-        
 
     })
     .catch(function(err){
