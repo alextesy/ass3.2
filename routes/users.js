@@ -177,7 +177,7 @@ router.get('/questionslist',function(req,res){
     })
 })
 
-router.post('/passwordRetrival',function(req,res){
+router.post('/passwordRetrieval',function(req,res){
     var questionQuery=util.format("SELECT answer FROM userquestions WHERE username='%s' AND (ID='%d' OR ID='%d');",req.body.username,req.body.questionID[0],req.body.questionID[1]);
     DButilsAzure.execQuery(questionQuery)
     .then(function(result){

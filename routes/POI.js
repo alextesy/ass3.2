@@ -45,7 +45,7 @@ router.get('/MostpopularPOI/:categoryid/numbers/:n',function(req,res){
 });
 
 
-//get from DB POI deatils ,images and reiviews
+//get from DB POI details ,images and reiviews
 router.get('/:POIid',function(req,res){
     var query=util.format("SELECT * FROM pois WHERE ID = '%s';",req.params.POIid);
     let arr = {};
