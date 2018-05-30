@@ -48,16 +48,11 @@ router.post('/log',function(req,res){
             }
             user.categories=categories;
             res.send(user);
-        })
- 
-
-
-        
-
+        })     
     })
  
     .catch(function(err){
-        console.err(err);
+        res.status(500).send('Error while getting user details');
     })
 })
 
@@ -67,10 +62,10 @@ router.post('/log/POI',function(req,res){
     var insertPOI = util.format("INSERT INTO userSaved (username,poiID,savedOrder) VALUES ('%s','%s','%s');",username,POI,0);
     DButilsAzure.execQuery(insertPOI)
     .then(function(result){
-        res.send(result);
+        res.send("The POI was saved Successfully");
     })
     .catch(function(err){
-        console.log(err);
+        res.status(500).send('Error while saving the POI');
     })
 
 })
@@ -81,10 +76,10 @@ router.delete('/log/POI',function(req,res){
     var insertPOI = util.format("DELETE FROM userSaved WHERE username='%s' AND poiID='%s';",username,POI);
     DButilsAzure.execQuery(insertPOI)
     .then(function(result){
-        res.send(result);
+        res.send("The POI was deleted Successfully");
     })
     .catch(function(err){
-        console.log(err);
+        res.status(500).send('Error while deletting the POI');
     })
 
 })
@@ -97,7 +92,7 @@ router.get('/log/saved',function(req,res){
         res.send(result);
     })
     .catch(function(err){
-        console.log(err);
+        res.status(500).send('Error while getting saved POIs');
     })
 
 })
@@ -119,7 +114,7 @@ router.get('/log/2LastSaved',function(req,res){
         res.send(returnArr);
     })
     .catch(function(err){
-        console.log(err);
+        res.status(500).send('Error while getting last saved');
     })
 
 })
@@ -132,7 +127,7 @@ router.get('/log/numberOfSaved',function(req,res){
         res.send(result[0]);
     })
     .catch(function(err){
-        console.log(err);
+        res.status(500).send('Error while getting number of saved');
     })
 })
 
@@ -178,14 +173,14 @@ router.post('/passwordRetrieval',function(req,res){
                 res.send(result[0]['password']);
             })
             .catch(function(err){
-                console.err(err);
+                res.status(500).send("Failed to retrieve the password");
             })
         }
         else 
             res.send('wrongAnswer');
     })
     .catch(function(err){
-        console.err(err);
+        res.status(500).send("Failed to retrieve the password");
     })
 
 
@@ -274,7 +269,7 @@ router.post('/login', function(req,res){
 
     })
     .catch(function(err){
-        console.log(err.message);
+        res.status(500).send('Error while logging in');
     })
   
 })
@@ -308,10 +303,10 @@ router.post('/log/rating',function(req,res){
             res.status(200).send("The Ratings has updated");
         })
         .catch(function(err){
-            res.status(500).send('Failed to rank');
+            res.status(500).send('Failed to rate');
         })
     })
     .catch(function(err){
-        res.status(500).send('Failed to rank');
+        res.status(500).send('Failed to rate');
     })
 })
