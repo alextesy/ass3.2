@@ -64,7 +64,7 @@ router.post('/log',function(req,res){
 router.post('/log/POI',function(req,res){
     var username=req.decoded.payload.userName;
     var POI=req.body.poiID;
-    var insertPOI = util.format("INSERT INTO userSaved (username,poiID) VALUES ('%s','%s');",username,POI);
+    var insertPOI = util.format("INSERT INTO userSaved (username,poiID,savedOrder) VALUES ('%s','%s','%s');",username,POI,0);
     DButilsAzure.execQuery(insertPOI)
     .then(function(result){
         res.send(result);
@@ -139,26 +139,16 @@ router.get('/log/numberOfSaved',function(req,res){
 router.put('/log/savedPOIOrder',function(req,res){
     var username=req.decoded.payload.userName;
     var pois=req.body.pois;
-    var files = [];
+    var arr=[];
     for (var i = 0; i < pois.length; ++i) {
-        var delQuery=util.format("DELETE FROM userSaved WHERE username='%s' AND poiID='%s';",username,pois[i]);
-        files.push(DButilsAzure.execQuery(delQuery));
+        var updateQuery=util.format("UPDATE userSaved SET savedOrder='%s' WHERE  username='%s' AND poiID='%s';",i,username,pois[i])
+        arr.push(DButilsAzure.execQuery(updateQuery));
     }
-    Promise.all(files).then(function() {
-        console.log("all saved deleted");
-    }).then(function(result){
-        var arr=[];
-        for (var i = 0; i < pois.length; ++i) {
-            var insertQuery=util.format("INSERT INTO userSaved(username,poiID) VALUES ('%s','%s');",username,pois[i])
-            arr.push(DButilsAzure.execQuery(insertQuery));
-        }
-        Promise.all(arr).then(function(){
-            console.log("new order has created");
-            res.send("The Order has been updated");
-        })
+    Promise.all(arr)
+    .then(function(){
+        console.log("new order has created");
+        res.send("The Order has been updated");
     })
-    
-    
     .catch(function(err){
         console.log(err);
         res.status(500).send('Error while updating order');
