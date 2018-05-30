@@ -186,6 +186,7 @@ router.post('/passwordRetrieval',function(req,res){
     })
     .catch(function(err){
         console.err(err);
+        res.status(500).send("Failed to return");
     })
 
 
@@ -275,6 +276,7 @@ router.post('/login', function(req,res){
     })
     .catch(function(err){
         console.log(err.message);
+        res.status(500).send("Failed to login");
     })
   
 })
