@@ -1,5 +1,5 @@
 angular.module('poiApp')
-.controller('formCtrl',['$http', function($scope,$http) {
+.controller('formCtrl',function($scope,$http) {
     let serverUrl='http://localhost:3000/'
     self=this;
     $scope.user={};
@@ -7,17 +7,19 @@ angular.module('poiApp')
         var username=$scope.user.username;
         var password=$scope.user.password;
     };
-    self.getCategories=function(){
-        self.$http.get(serverUrl + "POI/allCategories")
+
+        $http.get(serverUrl + "POI/allCategories")
         .then(function(response){
             $scope.categories=response.data
-        }),
+            console.log($scope.categories)
+        },
         function (response) {
             //Second function handles error
-            self.signUp.content = "Something went wrong";
-        }
-    };
-    self.getCategories();
+            $scope.categories = "Something went wrong";
+        });
+    
+ 
+    // console.log($scope.categories)
 
-}]);
+});
 

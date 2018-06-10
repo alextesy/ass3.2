@@ -31,9 +31,11 @@
             City:        <input type="text" ng-model="user.city"></br>
             Email:       <input type="text" ng-model="user.email"></br>
             Choose Your Favorite Categories: </br>
-    
-            <input type="checkbox" ng-model="user.category"></br>
-    
+            <table>
+            <tr ng-repeat="x in categories">
+                <td>{{x.categories}}</td><td><input  type="checkbox"></td>
+            </tr>
+            </table>
         </form>
     
     
