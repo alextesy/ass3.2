@@ -44,6 +44,19 @@ router.get('/MostpopularPOI/:categoryid/numbers/:n',function(req,res){
    
 });
 
+router.get('/allCategories',function(req,res){
+
+    var query=util.format("SELECT * FROM categories" );
+    DButilsAzure.execQuery(query)
+    .then(function(result){
+        res.send(result);
+    })
+    .catch(function(err){
+        console.err(err);
+        res.status(500).send('Error retrieving the categories POIs')
+
+    })
+});
 
 //get from DB POI details ,images and reiviews
 router.get('/:POIid',function(req,res){
@@ -165,5 +178,6 @@ function get_N_popularPOIinCat(category,n){
     })
     });
 }
+
 
 

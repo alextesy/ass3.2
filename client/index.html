@@ -1,0 +1,30 @@
+<html >
+    <head> 
+            <link rel="stylesheet" type="text/css" href="style.css" />
+
+    </head>
+
+        <body ng-app="poiApp">
+            <div id="menu">
+                <header>
+                        Idan Razy -
+                        Alex Kremiansky
+                    </header>
+                <li><a href="#/">Home</a></li>
+                <li><a href="#/about">About</a></li>
+                <li><a href="#/poi">POI</a></li>
+                <li><a href="#/service">service</a></li>
+
+            </div> 
+
+            <div ng-view></div>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+            <script src="../node_modules/angular-local-storage/dist/angular-local-storage.min.js"></script>
+            <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-route.js"></script>  
+            <script src="app.js"></script>
+            <script src="components/homeCtrl.js"></script>
+
+
+        </body>
+</html>

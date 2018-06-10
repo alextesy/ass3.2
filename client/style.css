@@ -1,0 +1,38 @@
+#menu
+{
+  top: 0%;
+  font-family: pacFont;
+	z-index: 100;
+	text-align: center;
+	display: inline-block;
+	list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: rgb(0, 0, 0);
+    position: fixed;
+	width: 100%;
+	left: 0;
+	font-size: 30px;
+}
+li {
+    display: inline-block;
+}
+li a {
+
+	display: block;
+    color: rgb(238, 255, 0);
+    text-align: center;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+li a.active {
+    background-color: #4CAF50;
+    color: white;
+}
+
+li a:hover:not(.active) {
+    background-color: rgb(245, 229, 3);
+    color: rgb(0, 0, 0);
+}
