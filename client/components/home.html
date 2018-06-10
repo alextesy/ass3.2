@@ -12,8 +12,8 @@
 
 <div ng-controller="formCtrl">
     <form ng-submit="submit()">
-        Username: <input type="text" ng-model="user.username">
-        Password: <input type="password" ng-model="user.password">
+        Username: <input type="text" ng-model="user.username_log">
+        Password: <input type="password" ng-model="user.password_log">
         <input type="submit" value="Login" />
 
     </form>
@@ -23,8 +23,8 @@
 
         <form><h1>Register</h1>
         </br>
-            Username:    <input type="text" ng-model="user.username"></br>
-            Password:    <input type="text" ng-model="user.password"></br>
+            Username:    <input type="text" ng-model="user.username_reg"></br>
+            Password:    <input type="text" ng-model="user.password_reg"></br>
             Firset Name: <input type="text" ng-model="user.firstname"></br>
             Last Name:   <input type="text" ng-model="user.lastname"></br>
             <!--Country:     <select input type="text" ng-model='user.country' ng-options="countries"></br>-->
@@ -33,7 +33,7 @@
             Choose Your Favorite Categories: </br>
             <table>
             <tr ng-repeat="x in categories">
-                <td>{{x.categories}}</td><td><input  type="checkbox"></td>
+                <td>{{x.categories}}</td><td><input  type="checkbox" ng-model="x.checked" value="true" ></td>
             </tr>
             </table>
         </form>
