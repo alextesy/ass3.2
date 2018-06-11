@@ -11,9 +11,9 @@
 
 
 <div ng-controller="formCtrl">
-    <form ng-submit="submit()">
-        Username: <input type="text" ng-model="user.username_log">
-        Password: <input type="password" ng-model="user.password_log">
+    <form ng-submit="submit_log()">
+        Username: <input type="text" ng-model="user.username">
+        Password: <input type="password" ng-model="user.password">
         <input type="submit" value="Login" />
 
     </form>
@@ -21,21 +21,28 @@
 
     
 
-        <form><h1>Register</h1>
+        <form ng-submit="submit_reg()"><h1>Register</h1>
         </br>
-            Username:    <input type="text" ng-model="user.username_reg"></br>
-            Password:    <input type="text" ng-model="user.password_reg"></br>
+            Username:    <input type="text" ng-model="user.username"></br>
+            Password:    <input type="password" ng-model="user.password"></br>
             Firset Name: <input type="text" ng-model="user.firstname"></br>
             Last Name:   <input type="text" ng-model="user.lastname"></br>
-            <!--Country:     <select input type="text" ng-model='user.country' ng-options="countries"></br>-->
+            Country:     <select ng-model='user.country' ng-options="x.Name for x in countries.Countries.Country"></select></br>
             City:        <input type="text" ng-model="user.city"></br>
             Email:       <input type="text" ng-model="user.email"></br>
+            First question: <select ng-model="user.questions[0]" ng-options="x.question for x in questionslist"></select>
+            answer: <input type="text" ng-model="user.answers[0]"></br>
+            Second question:<select ng-model="user.questions[1]" ng-options="x.question for x in questionslist"></select>
+            answer: <input type="text" ng-model="user.answers[1]"></br>
             Choose Your Favorite Categories: </br>
             <table>
             <tr ng-repeat="x in categories">
                 <td>{{x.categories}}</td><td><input  type="checkbox" ng-model="x.checked" value="true" ></td>
             </tr>
             </table>
+            <input type="submit" value="Register" />
+            {{selectedquestion1}}
+            {{selectedquestion2}}
         </form>
     
     
