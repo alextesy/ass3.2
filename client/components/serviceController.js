@@ -14,27 +14,6 @@ angular.module('poiApp')
 
 
 }])   
-.controller('serviceController', ['$location', '$http', 'setHeadersToken','localStorageModel', function ($location, $http, setHeadersToken,localStorageModel) {
-    self = this;
 
-    self.directToPOI = function () {
-        $location.path('/poi')
-    }
-
-    let serverUrl = 'http://localhost:3000/'
-    self.signUp = function (user) {
-        // register user
-        $http.post(serverUrl + "users/register", user)
-            .then(function (response) {
-                //First function handles success
-                self.signUp.content = response.data;
-            }, function (response) {
-                //Second function handles error
-                self.signUp.content = "Something went wrong";
-            });
-    }
-  
-
-}]);
 
     

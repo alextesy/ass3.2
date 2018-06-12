@@ -1,12 +1,23 @@
 angular.module('poiApp')
-.controller('formCtrl',function($scope,$http) {
+.controller('formCtrl', ['$location','$scope','$http','setHeadersToken','localStorageModel' ,function($location,$scope,$http,setHeadersToken,localStorageModel) {
     let serverUrl='http://localhost:3000/'
     self=this;
     $scope.user={};
     $scope.selcetedcat = {};
     $scope.submit_log=function(){
-        var username=$scope.user.username;
-        var password=$scope.user.password;
+        $http.post(serverUrl + "Users/login", $scope.user)
+        .then(function (response) {
+            //First function handles success
+            self.token = response.data.token;
+            setHeadersToken.set(self.token)
+            self.addTokenToLocalStorage();
+            alert("sucsses");
+
+
+        }, function (response) {
+            //Second function handles error
+            alert("Something went wrong");
+        });
   
     };
     $scope.submit_reg=function(){
@@ -58,5 +69,9 @@ angular.module('poiApp')
             $scope.countries = "Something went wrong";
         });
 
-});
+        self.addTokenToLocalStorage = function () {
+            localStorageModel.addLocalStorage('token', self.token)
+        }
+
+}]);
 
