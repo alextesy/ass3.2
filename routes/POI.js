@@ -95,15 +95,21 @@ router.get('/:POIid',function(req,res){
 //get random POI 
 router.get('/RandomPOI/:rating/n/:n',function(req,res){
 
-    var query=util.format("SELECT * FROM pois WHERE rating >= '%d';",req.params.rating);
+    var query=util.format("SELECT * FROM pois INNER JOIN poimage ON pois.ID=poimage.ID WHERE rating >= '%d';",req.params.rating);
     DButilsAzure.execQuery(query)
     .then(function(result){
         if(req.params.n > result.length)
             res.send(result);
         else{
             ans = [];
+            poid =[]
             for(i = 0 ; i < req.params.n;i+=1){
-                ans.push(result.splice(Math.floor(Math.random()*result.length),1));
+                var t = result.splice(Math.floor(Math.random()*result.length),1)
+                while(poid.includes(t[0].ID) & result.length>0){
+                    var t = result.splice(Math.floor(Math.random()*result.length),1)
+                }
+                ans.push(t);
+                poid.push(t[0].ID)
             }
             res.send(ans);
         }
