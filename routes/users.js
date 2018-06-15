@@ -16,13 +16,16 @@ router.use('/log',function(req,res,next){
     if(token){
         jwt.verify(token,'secret',function(err,decoded){
             if(err){
-                return res.json({success: false, message:'Failed to authenticate token.='});
+                return res.status(404).json({success: false, message:'Failed to authenticate token.='});
             }else{
                 var decoded=jwt.decode(token, {complete:true});
                 req.decoded=decoded;
                 next();
             }
         })
+    }
+    else{
+        return res.status(404).json({success: false, message:'Failed to authenticate token.='});
     }
 });
 
