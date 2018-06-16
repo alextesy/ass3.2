@@ -14,7 +14,7 @@ router.get('/AllPOIs',function(req,res){
             res.send(result);
         })
         .catch(function(err){
-            console.err(err);
+            console.log(err);
             res.status(500).send('error when try to find')
         })
 });
@@ -27,7 +27,7 @@ router.get('/POIbyCategory/:categoryid',function(req,res){
         res.send(result);
     })
     .catch(function(err){
-        console.err(err);
+        console.log(err);
         res.status(500).send('Error retrieving the categories POIs')
 
     })
@@ -52,7 +52,7 @@ router.get('/allCategories',function(req,res){
         res.send(result);
     })
     .catch(function(err){
-        console.err(err);
+        console.log(err);
         res.status(500).send('Error retrieving the categories POIs')
 
     })
@@ -85,7 +85,7 @@ router.get('/:POIid',function(req,res){
         res.send(arr);
     })
     .catch(function(err){
-        console.err(err);
+        console.log(err);
         res.status(500).send('error when try to find');
     })
 });
@@ -155,7 +155,7 @@ function getpoiimages(poinames){
 }
 function getpoireviews(poinames){
     return new Promise(function(resolve , reject){
-        var query=util.format("SELECT name,review FROM pois INNER JOIN poireview ON poireview.ID = pois.ID WHERE name='%s';",poinames);
+        var query=util.format("SELECT * FROM pois INNER JOIN poireview ON poireview.ID = pois.ID WHERE name='%s';",poinames);
         DButilsAzure.execQuery(query)
         .then(function(result){
             resolve(result);
