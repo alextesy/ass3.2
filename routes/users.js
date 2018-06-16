@@ -29,6 +29,25 @@ router.use('/log',function(req,res,next){
     }
 });
 
+
+router.post('/validation',function(req,res){
+    var token=req.body.token||req.query.token||req.headers['x-access-token'];
+    if(token){
+        jwt.verify(token,'secret',function(err,decoded){
+            if(err){
+                res.status(404).send({success: false, message:'Failed to authenticate token.='});
+            }else{
+                var decoded=jwt.decode(token, {complete:true});
+                req.decoded=decoded;
+                res.send({success:true});
+            }
+        })
+    }
+    else{
+        res.status(404).send({success: false, message:'Failed to authenticate token.='});
+    }
+});
+
 router.post('/log',function(req,res){
     var username=req.decoded.payload.userName;
     var userQuery=util.format("SELECT * FROM users WHERE username='%s';",username);
