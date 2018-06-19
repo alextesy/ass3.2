@@ -108,7 +108,7 @@ router.delete('/log/POI',function(req,res){
 
 router.get('/log/saved',function(req,res){
     var username=req.decoded.payload.userName;
-    var query=util.format("SELECT poiID, name FROM userSaved INNER JOIN pois ON userSaved.poiID = pois.ID WHERE userSaved.username = '%s';",username)
+    var query=util.format("SELECT poiID, name,savedOrder FROM userSaved INNER JOIN pois ON userSaved.poiID = pois.ID WHERE userSaved.username = '%s';",username)
     DButilsAzure.execQuery(query)
     .then(function(result){
         res.send(result);
@@ -153,7 +153,7 @@ router.get('/log/numberOfSaved',function(req,res){
     })
 })
 
-router.put('/log/savedPOIOrder',function(req,res){
+router.post('/log/savedPOIOrder',function(req,res){
     var username=req.decoded.payload.userName;
     var pois=req.body.pois;
     var arr=[];
