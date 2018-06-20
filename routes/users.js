@@ -92,7 +92,7 @@ router.post('/log/POI',function(req,res){
 
 })
 
-router.delete('/log/POI',function(req,res){
+router.post('/log/deletePOI',function(req,res){
     var username=req.decoded.payload.userName;
     var POI=req.body.poiID;
     var insertPOI = util.format("DELETE FROM userSaved WHERE username='%s' AND poiID='%s';",username,POI);
@@ -228,31 +228,31 @@ router.post('/register',function(req,res){
 //     //enter new user to users tables
     DButilsAzure.execQuery(query)
     .then(function(result){
-        res.send(result);
+        var catArr=[];
+        for(var i=0;i<categoriesID.length;i++){
+            var catquetyquery = util.format("INSERT INTO UserCategories VALUES ('%s','%s');",username,categoriesID[i]);
+            catArr.push(DButilsAzure.execQuery(catquetyquery));
+        }
+        Promise.all(catArr)
+        .then(function(result){
+            DButilsAzure.execQuery(questionquery)
+            .then(function(result){
+                res.send(result);
+            })
+            .catch(function(err){
+                res.status(500).send('Error Inserting in USER');
+            })
+          
+        })
     })
     .catch(function(err){
         res.status(500).send('Error Inserting in USER');
     })
 //    //enter new user categories
-    for(var i=0;i<categoriesID.length;i++){
-        var catquetyquery = util.format("INSERT INTO UserCategories VALUES ('%s','%s');",username,categoriesID[i]);
-        DButilsAzure.execQuery(catquetyquery)
-        .then(function(result){
-            res.send(result);
-        })
-        .catch(function(err){
-            res.status(500).send('Error Inserting in Category');
-        })
-    }
+    
     
     //enter new questions
-    DButilsAzure.execQuery(questionquery)
-    .then(function(result){
-        res.send(result);
-    })
-    .catch(function(err){
-        res.status(500).send('Error Inserting in questions');
-    })
+   
 });
 
 
@@ -286,7 +286,7 @@ router.post('/login', function(req,res){
             });    
         }
         else{
-            res.send('wrong pass');
+            res.status(404).send('wrong pass');
         }
 
     })
