@@ -124,13 +124,24 @@ router.get('/log/2LastSaved',function(req,res){
     var query=util.format("SELECT poiID, name, counter FROM userSaved INNER JOIN pois ON userSaved.poiID = pois.ID WHERE userSaved.username = '%s';",username)
     DButilsAzure.execQuery(query)
     .then(function(result){
+        
         var queue = new PriorityQueue({ comparator: function(a, b) { return b.counter - a.counter; }});
         for(var i=0;i<result.length;i++){
             queue.queue(result[i])
         }
         returnArr =[];
-        returnArr.push(queue.dequeue());	
-        returnArr.push(queue.dequeue());	
+        if(result.length===0){
+            res.send(returnArr);
+            return;
+        }
+        if(result.length===1){
+            returnArr.push(queue.dequeue());
+        }
+        if(result.length>1){
+            returnArr.push(queue.dequeue());	
+            returnArr.push(queue.dequeue());	
+
+        }
 
 
         res.send(returnArr);
