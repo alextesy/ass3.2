@@ -58,6 +58,15 @@ router.get('/allCategories',function(req,res){
     })
 });
 
+
+router.get('/updateNumOfViews/:POIid',function(req,res){
+    var x = req.params.POIid;
+    var q = util.format("UPDATE pois SET numOFViews = numOFViews + 1 WHERE ID = '%s'",x);
+    DButilsAzure.execQuery(q)
+    res.send("ok");
+});
+
+
 //get from DB POI details ,images and reiviews
 router.get('/:POIid',function(req,res){
     var query=util.format("SELECT * FROM pois WHERE ID = '%s';",req.params.POIid);
@@ -76,13 +85,8 @@ router.get('/:POIid',function(req,res){
     .then(function(arr){
        return getpoireviews(arr['poidetails'][0].name).then(function(reviews){  
            arr['reviews'] = reviews;
-           return arr;})
-    })
-    .then(function(arr){
-        var x = arr['poidetails'][0].ID;
-        var q = util.format("UPDATE pois SET numOFViews = numOFViews + 1 WHERE ID = '%s'",x);
-        DButilsAzure.execQuery(q)
-        res.send(arr);
+           res.send(arr);
+        })
     })
     .catch(function(err){
         console.log(err);

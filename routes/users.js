@@ -330,6 +330,7 @@ router.post('/log/rating',function(req,res){
         var newNumOfRaters=result[0]['numOfRaters']+1;
         var newSum=result[0]['sumOfRatings']+Number(rating);
         var newRating=newSum/newNumOfRaters;
+        newRating=newRating.toFixed(1);
         var newRatings = util.format("UPDATE pois SET numOfRaters='%s',sumOfRatings='%s',rating='%s' WHERE ID='%s';",newNumOfRaters,newSum,newRating,poiID);
         DButilsAzure.execQuery(newRatings)
         .then(function(result){
